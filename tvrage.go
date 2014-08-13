@@ -92,7 +92,7 @@ func (tv_rage *TVRage) TVData(MediaName string) (string, error) {
 // returns some results even if they are false. So it is hard to debug when
 // tvdb errs. Sometimes when tvdb returns wrong titlename, subsequent api
 // returns data for the wrong titlename
-func (tv_rage *TVRage) getUsableTvName(MediaName string) (string, error) {
+func (tv_rage *TVRage) UsableTVName(MediaName string) (string, error) {
 	res, err := http.Get("http://services.tvrage.com/myfeeds/search.php?key=" + tv_rage.tv_rage_api_key + "&show=" + MediaName)
 	if err != nil {
 		return MediaName, err
@@ -154,8 +154,8 @@ func gettvdbMirrorPath() string {
 	return "http://thetvdb.com/"
 }
 
-//filter out unwanted tv metadata
-func (tv_rage *TVRage) filterTvData(data string) (string, error) {
+// convert to JSON after filtering out unwanted tv metadata
+func (tv_rage *TVRage) ToJSON(data string) (string, error) {
 	var f filtered_output
 	var det tvMetadata
 	err := json.Unmarshal([]byte(data), &det)
